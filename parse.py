@@ -37,7 +37,7 @@ def main():
         print(f'{file}:')
         lines = []
 
-        direction = input('Direction: ')
+        direction = input('Direction (eastbound | westbound): ')
         date = dateparser.parse(input('Date: ')).date()
 
         if direction == 'eastbound':
@@ -55,17 +55,19 @@ def main():
                 close = datetime.datetime(close.year, close.month, close.day, 18, 0, 0)
             else: close = dateparser.parse(close)
 
-            number_col = int(input('Trip number column: '))
-            block_col = int(input('Vehicle block number column: '))
+            print('Note: column numbers start at 0')
+            number_col = int(input('Column number: trip number: '))
+            block_col = int(input('Column number: vehicle block number: '))
 
             stops = ['bursley', 'hill', 'state', 'airport']
         else:
-            number_col = int(input('Number column: '))
+            print('Note: column numbers start at 0')
+            number_col = int(input('Column number: trip number: '))
             stops = ['north', 'mcnamara', 'annarbor']
 
         schedule_cols = []
         for stop in stops:
-            schedule_cols.append(int(input(f'Time for stop {stop} column: ')))
+            schedule_cols.append(int(input(f'Column number: stop {stop}: ')))
 
         if latest_date is None or date > latest_date:
             latest_date = date
