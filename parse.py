@@ -62,6 +62,7 @@ def process_file(file_path, season_id, latest_date):
     sql = ''
 
     for i in range(days):
+        print('Note: rows start at 0')
         start_row = int(input('First row for day (from spreadsheet): '))
         end_row = int(input('Last row for day (from spreadsheet): '))
 
@@ -106,7 +107,6 @@ def process_file(file_path, season_id, latest_date):
             for (i, row) in enumerate(src):
                 if i < start_row or i > end_row: continue
                 number = row[number_col]
-                block = row[block_col]
                 schedule = [dateparser.parse(row[x]) for x in schedule_cols]
                 if any(x is None for x in schedule):
                     continue
@@ -119,6 +119,8 @@ def process_file(file_path, season_id, latest_date):
                 times = '"' + '","'.join(schedule) + '"'
 
                 if direction == 'eastbound':
+                    block = row[block_col]
+
                     sql += f'\nINSERT INTO orms_trips (seasonId, number, direction, date, capacity, blockNumber, reservationsOpen, reservationsClose, {",".join(stops)}) ' + \
                         f'VALUES ({season_id}, {number}, "eastbound", "{date}", {capacity}, {block}, "{start}", "{close}", {times});'
                 else:
